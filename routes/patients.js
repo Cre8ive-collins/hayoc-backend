@@ -5,6 +5,33 @@ const jwt = require('jsonwebtoken')
 
 function patients(){
 
+    route.get('/diagnosis' , (req, res) => {
+        const id = req.query.id
+        console.log(id)
+        pool.getConnection((err, con) => {
+            if(err) {
+                res.status(500).json({
+                    message: "Internal Server Error",
+                    err: err.message
+
+                })
+            }else{
+                con.query(`SELECT * FROM hayok_patientencounter WHERE patientId = ${id}`, (err, result) => {
+                    if(err) {
+                        res.status(500).json({
+                            message: "Internal Server Error",
+                            err: err.message
+                        })
+                    }else{
+                        res.status(200).json({
+                            result : result
+                        })
+                    }
+                })
+            }
+        })
+    })
+
     route.post('/login', (req, res) => {
         const data = req.body
         pool.getConnection((err, con) => {
