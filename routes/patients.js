@@ -23,8 +23,11 @@ function patients(){
                     }else{
                         // CHECK PASSWORD 
                         if(response[0].password == data.password){
+                            const token = jwt.sign({ id: response[0].id }, 'secret');
                             res.status(200).json({
-                                token : "token"
+                                token : token,
+                                message: 'Login Successfull',
+                                id : response[0].id
                             })
                         }else{
                             res.status(401).json({
